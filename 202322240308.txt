@@ -1,0 +1,97 @@
+JAHAN MINARA(20232240308)
+DATABASE  WORKSHIT
+------------------------------------------------------------------------------------
+
+
+CREATE DATABASE students;
+
+USE students;
+
+CREATE TABLE Author (
+    email_id VARCHAR(255) PRIMARY KEY,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100)
+);
+
+CREATE TABLE Paper (
+    paper_id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255),
+    abstract TEXT,
+    file_name VARCHAR(255),
+    contact_author_email VARCHAR(255),
+    FOREIGN KEY (contact_author_email) REFERENCES Author(email_id)
+);
+
+
+CREATE TABLE Reviewer (
+    email_id VARCHAR(255) PRIMARY KEY,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    phone_number VARCHAR(20),
+    affiliation VARCHAR(255),
+    topics_of_interest TEXT
+);
+
+CREATE TABLE Review (
+    review_id INT PRIMARY KEY AUTO_INCREMENT,
+    paper_id INT,
+    reviewer_email VARCHAR(255),
+    technical_merit INT,
+    readability INT,
+    originality INT,
+    relevance INT,
+    recommendation VARCHAR(50),
+    committee_comments TEXT,
+    author_feedback TEXT,
+    FOREIGN KEY (paper_id) REFERENCES Paper(paper_id),
+    FOREIGN KEY (reviewer_email) REFERENCES Reviewer(email_id)
+);
+
+INSERT INTO Author (email_id, first_name, last_name)
+VALUES 
+('john.doe@example.com', 'John', 'Doe'),
+('alice.smith@example.com', 'Alice', 'Smith'),
+('bob.jones@example.com', 'Bob', 'Jones');
+
+INSERT INTO Paper (title, abstract, file_name, contact_author_email)
+VALUES 
+('The Future of AI', 'A paper about the future applications of AI', 'future_of_ai.pdf', 'john.doe@example.com'),
+('Climate Change Impacts', 'A paper on the impact of climate change on ecosystems', 'climate_change_impacts.pdf', 'alice.smith@example.com'),
+('Quantum Computing Revolution', 'Exploring the possibilities of quantum computing', 'quantum_computing.pdf', 'bob.jones@example.com');
+
+
+INSERT INTO Reviewer (email_id, first_name, last_name, phone_number, affiliation, topics_of_interest)
+VALUES 
+('jane.reviewer@example.com', 'Jane', 'Reviewer', '1234567890', 'University of X', 'AI, Machine Learning'),
+('michael.reviewer@example.com', 'Michael', 'Reviewer', '0987654321', 'Institute of Y', 'Climate Science, Environment'),
+('susan.reviewer@example.com', 'Susan', 'Reviewer', '4561237890', 'Tech Corp', 'Quantum Computing, Physics');
+
+
+INSERT INTO Review (paper_id, reviewer_email, technical_merit, readability, originality, relevance, recommendation, committee_comments, author_feedback)
+VALUES 
+(1, 'jane.reviewer@example.com', 8, 9, 7, 8, 'Accept', 'Good contribution to AI', 'No feedback yet'),
+(2, 'michael.reviewer@example.com', 9, 8, 9, 10, 'Accept', 'Highly relevant to current issues', 'No feedback yet'),
+(3, 'susan.reviewer@example.com', 10, 9, 8, 9, 'Minor Revisions', 'Needs some improvements in section 3', 'No feedback yet');
+
+
+
+
+
+DATABASE QUERRY
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+SELECT * FROM students.author;
+
+SELECT * FROM students.review;
+
+SELECT * FROM students.reviewer;
+
+2/SELECT first_name, last_name, topics_of_interest
+FROM Reviewer;
+
+3/SELECT Paper.title, AVG(Review.technical_merit) AS avg_technical_merit
+FROM Review
+JOIN Paper ON Review.paper_id = Paper.paper_id
+GROUP BY Paper.paper_id, Paper.title;
+
+
